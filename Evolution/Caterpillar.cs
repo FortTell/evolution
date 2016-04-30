@@ -9,13 +9,6 @@ namespace Evolution
 {
     public class Caterpillar : ICreature
     {
-        public CreatureCommand command;
-        //Queue<CC>?
-        Bitmap image;
-        Rectangle hitbox;
-        int x;
-        int y;
-
         public Caterpillar()
         {
 
