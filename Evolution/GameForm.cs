@@ -19,18 +19,51 @@ namespace Evolution
             Height = 600;
             Width = 800;
             Text = "Evolution";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             game = new Game();
+            
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
+            var creatureTypes = GetCreatureTypes();
+
+            Menu = new MainMenu();
+            var spawner = new MenuItem("Spawn a creature");
+            foreach (var type in creatureTypes)
+            {
+                var item = new MenuItem(type.Name);
+                item.Click += (sender, args) =>
+                {
+                    var ctor = type.GetConstructor(Type.EmptyTypes);
+                    var creature = (ICreature)ctor.Invoke(null);
+                    game.creatures.Add(creature);
+                };
+                spawner.MenuItems.Add(item);
+            }
+            Menu.MenuItems.Add(spawner);
+
             var img = new Bitmap("gfx\\caterpillar.jpg");
             l = new Label { Top = 50, Left = 50, Height = img.Height, Width = img.Width, Image = img };
             Controls.Add(l);
         }
 
+        private List<Type> GetCreatureTypes()
+        {
+            var ass = System.Reflection.Assembly.GetEntryAssembly();
+            return ass.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(typeof(ICreature)))
+                .ToList();
+        }
+
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
             game.HandleKeyPress(e.KeyChar.ToString());
-            l.Left += game.ctplr.command.dx;
-            l.Top += game.ctplr.command.dy;
-            game.ctplr.command = new CreatureCommand();
+            //l.Left += game.ctplr.command.dx;
+            //l.Top += game.ctplr.command.dy;
+            //game.ctplr.command = new CreatureCommand();
             Invalidate();
             base.OnKeyPress(e);
         }
@@ -52,6 +85,9 @@ namespace Evolution
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            var g = e.Graphics;
+            foreach (var c in game.creatures)
+                g.DrawImage(c.image, c.coords);
             base.OnPaint(e);
         }
     }

@@ -32,10 +32,13 @@ namespace Evolution
 
         public CreatureAnimation Until(ICreature actor, Func<ICreature, bool> condition)
         {
-            while (!condition(actor)) //Не знаю, как написать
-            {
+            if (condition(actor))
+                commands.Clear();
+            return this;
+        }
 
-            }
+        public CreatureAnimation Then()
+        {
             return this;
         }
     }

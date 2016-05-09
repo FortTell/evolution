@@ -13,12 +13,33 @@ namespace Evolution
     public partial class Form1 : Form
     {
         Game game;
+        public List<Type> creatureTypes;
+
         public Form1()
         {
             InitializeComponent();
+
+            Invalidate();
         }
 
+        
+
+        
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            foreach (var c in game.creatures)
+                e.Graphics.DrawImage(c.image, c.coords);
+            base.OnPaint(e);
+        }
+        
+        
+        
+        
+        
         int tickCount = 0;
+
+
 
         /*void TimerTick(object sender, EventArgs args)
         {

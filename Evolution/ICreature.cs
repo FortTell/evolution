@@ -10,11 +10,10 @@ namespace Evolution
     public interface ICreature
     {
         //public CreatureCommand command;
-        public CreatureAnimation currentAnim { get; set; }
+        //CreatureAnimation currentAnim { get; set; }
         //Queue<CC>?
-        Bitmap image;
-        Rectangle hitbox;
-        int x;
-        int y;
+        Bitmap image { get; }
+        //Rectangle hitbox { get; set; }
+        Point coords { get; }
     }
 }

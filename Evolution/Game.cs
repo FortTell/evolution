@@ -21,10 +21,10 @@ namespace Evolution
         {
             switch (s.ToLower())
             {
-                case "w": ctplr.command = new CreatureCommand { dy = -1 }; break;
+                //case "w": ctplr.command = new CreatureCommand { dy = -1 }; break;
                 //case "s": ctplr.command = new CreatureCommand { dy = 1 }; break;
-                case "a": ctplr.command = new CreatureCommand { dx = -1 }; break;
-                case "d": ctplr.command = new CreatureCommand { dx = 1 }; break;
+                //case "a": ctplr.command = new CreatureCommand { dx = -1 }; break;
+                //case "d": ctplr.command = new CreatureCommand { dx = 1 }; break;
                 default: break;
             }
         }

@@ -9,9 +9,13 @@ namespace Evolution
 {
     public class Caterpillar : ICreature
     {
+        public Point coords { get; private set; }
+        public Bitmap image { get; private set; }
+
         public Caterpillar()
         {
-
+            this.coords = new Point(200, 200);
+            this.image = new Bitmap(@"Gfx\caterpillar.jpg");
         }
 
         /*void Refresh()
