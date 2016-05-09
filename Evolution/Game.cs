@@ -14,7 +14,7 @@ namespace Evolution
         public Game()
         {
             creatures = new List<ICreature>();
-            ctplr = new Caterpillar();
+            ctplr = new Caterpillar(10, 10);
         }
 
         public void HandleKeyPress(string s)

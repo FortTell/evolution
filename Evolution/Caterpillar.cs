@@ -12,9 +12,9 @@ namespace Evolution
         public Point coords { get; private set; }
         public Bitmap image { get; private set; }
 
-        public Caterpillar()
+        public Caterpillar(int x, int y)
         {
-            this.coords = new Point(200, 200);
+            this.coords = new Point(x, y);
             this.image = new Bitmap(@"Gfx\caterpillar.jpg");
         }
 

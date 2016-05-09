@@ -12,10 +12,10 @@ namespace Evolution
         public Point coords { get; private set; }
         public Bitmap image { get; private set; }
 
-        public Bird()
+        public Bird(int x, int y)
         {
             this.image = new System.Drawing.Bitmap(@"Gfx\bird.png");
-            this.coords = new System.Drawing.Point(100, 100);
+            this.coords = new System.Drawing.Point(x, y);
             //c.currentAnim = AILogic();
         }
 

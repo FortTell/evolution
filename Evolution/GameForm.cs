@@ -12,6 +12,7 @@ namespace Evolution
     {
         Game game;
         Label l;
+        Random rnd = new Random();
         int tickCount = 0;
         
         public GameForm()
@@ -37,9 +38,10 @@ namespace Evolution
                 var item = new MenuItem(type.Name);
                 item.Click += (sender, args) =>
                 {
-                    var ctor = type.GetConstructor(Type.EmptyTypes);
-                    var creature = (ICreature)ctor.Invoke(null);
+                    var ctor = type.GetConstructor(new Type[] { typeof(int), typeof(int) });
+                    var creature = (ICreature)ctor.Invoke(new object[] { rnd.Next(Size.Width), rnd.Next(Size.Height) });
                     game.creatures.Add(creature);
+                    Invalidate();
                 };
                 spawner.MenuItems.Add(item);
             }
