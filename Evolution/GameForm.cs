@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 
 namespace Evolution
 {
@@ -14,6 +15,7 @@ namespace Evolution
         Label l;
         Random rnd = new Random();
         int tickCount = 0;
+        Dictionary<Type, List<Bitmap>> creatureImages;
         
         public GameForm()
         {
@@ -23,14 +25,14 @@ namespace Evolution
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             game = new Game();
-            
-            InitializeUI();
+
+            var creatureTypes = GetCreatureTypes();
+            InitializeUI(creatureTypes);
+            FillCreatureImageDict(creatureTypes);
         }
 
-        private void InitializeUI()
+        private void InitializeUI(List<Type> creatureTypes)
         {
-            var creatureTypes = GetCreatureTypes();
-
             Menu = new MainMenu();
             var spawner = new MenuItem("Spawn a creature");
             foreach (var type in creatureTypes)
@@ -39,17 +41,32 @@ namespace Evolution
                 item.Click += (sender, args) =>
                 {
                     var ctor = type.GetConstructor(new Type[] { typeof(int), typeof(int) });
-                    var creature = (ICreature)ctor.Invoke(new object[] { rnd.Next(Size.Width), rnd.Next(Size.Height) });
+                    var creature = (ICreature)ctor.Invoke(
+                        new object[] { rnd.Next(Size.Width - 64), rnd.Next(Size.Height - 64) });
                     game.creatures.Add(creature);
                     Invalidate();
                 };
                 spawner.MenuItems.Add(item);
             }
             Menu.MenuItems.Add(spawner);
+        }
 
-            var img = new Bitmap("gfx\\caterpillar.jpg");
-            l = new Label { Top = 50, Left = 50, Height = img.Height, Width = img.Width, Image = img };
-            Controls.Add(l);
+        private void FillCreatureImageDict(List<Type> creatureTypes)
+        {
+            creatureImages = new Dictionary<Type, List<Bitmap>>();
+            foreach (var type in creatureTypes)
+            {
+                creatureImages.Add(type, new List<Bitmap>());
+                var name = type.Name.ToLower();
+                for (int i = 1; i <= 8; i++)
+                {
+                    var filename = @"Gfx\" + name + i + ".png";
+                    if (File.Exists(filename))
+                        creatureImages[type].Add(new Bitmap(filename));
+                    else 
+                        break;
+                }
+            }
         }
 
         private List<Type> GetCreatureTypes()
@@ -63,33 +80,38 @@ namespace Evolution
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
             game.HandleKeyPress(e.KeyChar.ToString());
-            //l.Left += game.ctplr.command.dx;
-            //l.Top += game.ctplr.command.dy;
-            //game.ctplr.command = new CreatureCommand();
             Invalidate();
             base.OnKeyPress(e);
         }
 
-        void Act()
+        void TimerTick(object sender, EventArgs args)
         {
+            if (tickCount == 0)
+                foreach (var c in game.creatures)
+                    c.SetCurrentAnim();
             foreach (var c in game.creatures)
-            { /*c.Act();*/ }
+                c.Location = new Point { 
+                    X = c.Location.X + c.currentAnim[tickCount].dx, 
+                    Y = c.Location.Y + c.currentAnim[tickCount].dy 
+                };
+            if (tickCount == 7)
+            {
+                //handle collisions
+            }
+            tickCount++;
+            if (tickCount == 8) 
+                tickCount = 0;
+            Invalidate();
         }
-
-        /*void TimerTick(object sender, EventArgs args)
-        {
-            if (tickCount == 0) 
-                Act();
-            foreach(
-
-
-        }*/
 
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
             foreach (var c in game.creatures)
-                g.DrawImage(c.image, c.coords);
+            {
+                var imgList = creatureImages[c.GetType()];
+                g.DrawImage(imgList[tickCount % imgList.Count], c.Location);
+            }
             base.OnPaint(e);
         }
     }

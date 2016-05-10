@@ -25,14 +25,6 @@ namespace Evolution
         
 
         
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            foreach (var c in game.creatures)
-                e.Graphics.DrawImage(c.image, c.coords);
-            base.OnPaint(e);
-        }
-        
         
         
         

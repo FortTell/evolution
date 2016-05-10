@@ -9,12 +9,10 @@ namespace Evolution
     public class Game
     {
         public List<ICreature> creatures;
-        public Caterpillar ctplr;
 
         public Game()
         {
-            creatures = new List<ICreature>();
-            ctplr = new Caterpillar(10, 10);
+            creatures = new List<ICreature> { new Caterpillar(10, 10) };
         }
 
         public void HandleKeyPress(string s)

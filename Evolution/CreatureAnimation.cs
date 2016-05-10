@@ -8,11 +8,16 @@ namespace Evolution
 {
     public class CreatureAnimation
     {
-        private readonly Queue<CreatureCommand> commands = new Queue<CreatureCommand>();
+        private readonly List<CreatureCommand> commands = new List<CreatureCommand>();
+
+        public CreatureCommand this[int i]
+        {
+            get { return this.commands[i]; }
+        }
 
         private void AddInner(CreatureCommand c)
         {
-            commands.Enqueue(c);
+            commands.Add(c);
         }
 
         public CreatureAnimation Add(CreatureCommand c)
@@ -30,7 +35,7 @@ namespace Evolution
             return this;
         }
 
-        public CreatureAnimation Until(ICreature actor, Func<ICreature, bool> condition)
+        public CreatureAnimation DoUntil(ICreature actor, Func<ICreature, bool> condition)
         {
             if (condition(actor))
                 commands.Clear();

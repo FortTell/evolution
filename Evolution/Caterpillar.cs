@@ -9,19 +9,17 @@ namespace Evolution
 {
     public class Caterpillar : ICreature
     {
-        public Point coords { get; private set; }
-        public Bitmap image { get; private set; }
+        public Point Location { get; set; }
+        public CreatureAnimation currentAnim { get; private set; }
 
         public Caterpillar(int x, int y)
         {
-            this.coords = new Point(x, y);
-            this.image = new Bitmap(@"Gfx\caterpillar.jpg");
+            this.Location = new Point(x, y);
         }
 
-        /*void Refresh()
+        public void SetCurrentAnim()
         {
-            commands.Enqueue(...);
-            hitbox = new Rectangle(x, y, image.Width, image.Height);
-        }*/
+
+        }
     }
 }
