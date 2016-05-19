@@ -8,38 +8,63 @@ namespace Evolution
 {
     public class CreatureAnimation
     {
-        private readonly List<CreatureCommand> commands = new List<CreatureCommand>();
+        private readonly List<CreatureCommand> commands;
+        private Random rnd = new Random();
+
+        public CreatureAnimation()
+        {
+            commands = new List<CreatureCommand>();
+        }
+
+        public CreatureAnimation(List<CreatureCommand> commands)
+        {
+            this.commands = commands;
+        }
+
+        public static CreatureAnimation DoNothing
+        {
+            get
+            {
+                return new CreatureAnimation().Add(new CreatureCommand()).Repeat(8);
+            }
+        }
 
         public CreatureCommand this[int i]
         {
             get { return this.commands[i]; }
         }
 
-        private void AddInner(CreatureCommand c)
-        {
-            commands.Add(c);
-        }
-
         public CreatureAnimation Add(CreatureCommand c)
         {
-            AddInner(c);
-            return this;
+            var newCommands = new List<CreatureCommand>(commands);
+            newCommands.Add(c);
+            return new CreatureAnimation(newCommands);
         }
 
-        public CreatureAnimation Repeat(int count, Func<CreatureAnimation, CreatureAnimation> inner)
+        public CreatureAnimation Repeat(int count)
         {
-            var innerAnim = inner(new CreatureAnimation());
-            for (var i = 0; i < count; i++)
-                foreach(var c in innerAnim.commands)
-                    AddInner(c);
-            return this;
+            var repeatSize = commands.Count;
+            var newCommands = new List<CreatureCommand>();
+            for (int i = 0; i < count; i++)
+                for (var j = 0; j < repeatSize; j++)
+                    newCommands.Add(commands[j]);
+            return new CreatureAnimation(newCommands);
+        }
+
+        public CreatureAnimation AddRandom(params CreatureCommand[] choices)
+        {
+            var command = choices[rnd.Next(choices.Length)];
+            var newCommands = new List<CreatureCommand>(commands);
+            newCommands.Add(command);
+            return new CreatureAnimation(newCommands);
         }
 
         public CreatureAnimation DoUntil(ICreature actor, Func<ICreature, bool> condition)
         {
             if (condition(actor))
-                commands.Clear();
-            return this;
+                return CreatureAnimation.DoNothing;
+            else
+                return this;
         }
 
         public CreatureAnimation Then()

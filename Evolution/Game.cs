@@ -13,6 +13,7 @@ namespace Evolution
         public Game()
         {
             creatures = new List<ICreature> { new Caterpillar(10, 10) };
+            creatures[0].SetCurrentAnim();
         }
 
         public void HandleKeyPress(string s)

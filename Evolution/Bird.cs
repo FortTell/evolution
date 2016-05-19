@@ -19,14 +19,23 @@ namespace Evolution
 
         public void SetCurrentAnim()
         {
+            //more readable
             var result = new CreatureAnimation()
-                .Repeat(4, anim => anim//anim.Down().DownRight()
+                .Add(new CreatureCommand { dy = 1 })
+                .Add(new CreatureCommand { dx = 1, dy = 1 })
+                .Repeat(4)
+                .DoUntil(this, c => c.Location.Y >= 300).Then()
+                .Add(new CreatureCommand { dy = -1 })
+                .Add(new CreatureCommand { dx = 1, dy = -1 })                
+                .Repeat(4);
+
+                /*.Repeat(4, anim => anim//anim.Down().DownRight()
                     .Add(new CreatureCommand{dy = 1})
                     .Add(new CreatureCommand{dx = 1, dy = 1}))
                 .DoUntil(this, c => c.Location.Y >= 300).Then()
                 .Repeat(4, anim => anim
                     .Add(new CreatureCommand { dy = -1 })
-                    .Add(new CreatureCommand { dx = 1, dy = -1 }));
+                    .Add(new CreatureCommand { dx = 1, dy = -1 }));*/
             this.currentAnim = result;
         }
     }

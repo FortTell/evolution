@@ -12,6 +12,15 @@ namespace Evolution
         public Point Location { get; set; }
         public CreatureAnimation currentAnim { get; private set; }
 
+        private CreatureCommand[] moveChoices = new CreatureCommand[] 
+        {
+            new CreatureCommand { dx = 1 }, 
+            new CreatureCommand { dx = -1 }, 
+            new CreatureCommand { dy = 1 }, 
+            new CreatureCommand { dy = -1 }, 
+            new CreatureCommand { dx = 1, dy = -1 } 
+        };
+
         public Caterpillar(int x, int y)
         {
             this.Location = new Point(x, y);
@@ -19,7 +28,12 @@ namespace Evolution
 
         public void SetCurrentAnim()
         {
-
+            currentAnim = new CreatureAnimation()
+                .AddRandom(moveChoices)
+                .AddRandom(moveChoices)
+                .AddRandom(moveChoices)
+                .AddRandom(moveChoices)
+                .Repeat(2);
         }
     }
 }
