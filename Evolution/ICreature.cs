@@ -9,11 +9,11 @@ namespace Evolution
 {
     public interface ICreature
     {
-        //public CreatureCommand command;
         CreatureAnimation currentAnim { get; }
         void SetCurrentAnim();
-        //Queue<CC>?
-        //Rectangle hitbox { get; set; }
+        //must make an anim 8 or more items long, or NullRefExcept on tick. Fix?
+
         Point Location { get; set; }
+        //Rectangle hitbox { get; set; }
     }
 }

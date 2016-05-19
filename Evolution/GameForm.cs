@@ -29,6 +29,11 @@ namespace Evolution
             var creatureTypes = GetCreatureTypes();
             InitializeUI(creatureTypes);
             FillCreatureImageDict(creatureTypes);
+
+            var timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += (sender, args) => TimerTick();
+            timer.Start();
         }
 
         private void InitializeUI(List<Type> creatureTypes)
@@ -58,7 +63,9 @@ namespace Evolution
             {
                 creatureImages.Add(type, new List<Bitmap>());
                 var name = type.Name.ToLower();
-                for (int i = 1; i <= 8; i++)
+                for (int i = 1; i <= 8; i++) 
+                //possible inconsistency: image lists are left small if no pictures (and then take i % list.Count)
+                //while CrAnims should be padded to 8 items(or more, but longer lists are useless) or else. <- And nobody even knows that beforehand.
                 {
                     var filename = @"Gfx\" + name + i + ".png";
                     if (File.Exists(filename))
@@ -84,7 +91,7 @@ namespace Evolution
             base.OnKeyPress(e);
         }
 
-        void TimerTick(object sender, EventArgs args)
+        void TimerTick()
         {
             if (tickCount == 0)
                 foreach (var c in game.creatures)
