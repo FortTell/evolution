@@ -10,5 +10,10 @@ namespace Evolution
     {
         public int dx;
         public int dy;
+
+        public override string ToString()
+        {
+            return "dx: " + dx + ", dy: " + dy;
+        }
     }
 }

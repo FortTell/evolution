@@ -9,7 +9,7 @@ namespace Evolution
     public class CreatureAnimation
     {
         private readonly List<CreatureCommand> commands;
-        private Random rnd = new Random();
+        private static Random rnd = new Random();
 
         public CreatureAnimation()
         {
@@ -27,6 +27,11 @@ namespace Evolution
             {
                 return new CreatureAnimation().Add(new CreatureCommand()).Repeat(8);
             }
+        }
+
+        public int Length
+        {
+            get { return this.commands.Count; }
         }
 
         public CreatureCommand this[int i]
@@ -59,10 +64,10 @@ namespace Evolution
             return new CreatureAnimation(newCommands);
         }
 
-        public CreatureAnimation DoUntil(ICreature actor, Func<ICreature, bool> condition)
+        public CreatureAnimation DoUntil(Creature actor, Func<Creature, bool> condition)
         {
             if (condition(actor))
-                return CreatureAnimation.DoNothing;
+                return new CreatureAnimation();
             else
                 return this;
         }

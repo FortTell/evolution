@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Evolution
 {
-    public class Caterpillar : ICreature
+    public class Caterpillar : Creature
     {
-        public Point Location { get; set; }
-        public CreatureAnimation currentAnim { get; private set; }
-
         private CreatureCommand[] moveChoices = new CreatureCommand[] 
         {
             new CreatureCommand { dx = 1 }, 
@@ -23,12 +20,13 @@ namespace Evolution
 
         public Caterpillar(int x, int y)
         {
-            this.Location = new Point(x, y);
+            SetLocation(x, y);
+            MakeNextMove();
         }
 
-        public void SetCurrentAnim()
+        public override CreatureAnimation MakeCurrentAnim()
         {
-            currentAnim = new CreatureAnimation()
+            return new CreatureAnimation()
                 .AddRandom(moveChoices)
                 .AddRandom(moveChoices)
                 .AddRandom(moveChoices)

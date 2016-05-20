@@ -24,6 +24,7 @@ namespace Evolution
             Text = "Evolution";
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.DoubleBuffered = true;
             game = new Game();
 
             var creatureTypes = GetCreatureTypes();
@@ -46,7 +47,7 @@ namespace Evolution
                 item.Click += (sender, args) =>
                 {
                     var ctor = type.GetConstructor(new Type[] { typeof(int), typeof(int) });
-                    var creature = (ICreature)ctor.Invoke(
+                    var creature = (Creature)ctor.Invoke(
                         new object[] { rnd.Next(Size.Width - 64), rnd.Next(Size.Height - 64) });
                     game.creatures.Add(creature);
                     Invalidate();
@@ -64,8 +65,6 @@ namespace Evolution
                 creatureImages.Add(type, new List<Bitmap>());
                 var name = type.Name.ToLower();
                 for (int i = 1; i <= 8; i++) 
-                //possible inconsistency: image lists are left small if no pictures (and then take i % list.Count)
-                //while CrAnims should be padded to 8 items(or more, but longer lists are useless) or else. <- And nobody even knows that beforehand.
                 {
                     var filename = @"Gfx\" + name + i + ".png";
                     if (File.Exists(filename))
@@ -80,7 +79,7 @@ namespace Evolution
         {
             var ass = System.Reflection.Assembly.GetEntryAssembly();
             return ass.GetTypes()
-                .Where(t => t.GetInterfaces().Contains(typeof(ICreature)))
+                .Where(t => t.BaseType == typeof(Creature))
                 .ToList();
         }
 
@@ -95,14 +94,14 @@ namespace Evolution
         {
             if (tickCount == 0)
                 foreach (var c in game.creatures)
-                    c.SetCurrentAnim();
+                    c.MakeNextMove();
             foreach (var c in game.creatures)
-                c.Location = new Point { 
-                    X = c.Location.X + c.currentAnim[tickCount].dx, 
-                    Y = c.Location.Y + c.currentAnim[tickCount].dy 
-                };
+                c.SetLocation(
+                    c.Location.X + c.currentAnim[tickCount].dx, 
+                    c.Location.Y + c.currentAnim[tickCount].dy);
             if (tickCount == 7)
             {
+                
                 //handle collisions
             }
             tickCount++;

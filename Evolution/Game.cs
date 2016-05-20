@@ -8,12 +8,12 @@ namespace Evolution
 {
     public class Game
     {
-        public List<ICreature> creatures;
+        public List<Creature> creatures;
 
         public Game()
         {
-            creatures = new List<ICreature> { new Caterpillar(10, 10) };
-            creatures[0].SetCurrentAnim();
+            creatures = new List<Creature> { new Caterpillar(10, 10) };
+            creatures[0].MakeNextMove();
         }
 
         public void HandleKeyPress(string s)
