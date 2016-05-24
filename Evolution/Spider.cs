@@ -27,19 +27,20 @@ namespace Evolution
                 else
                 {
                     result = new CreatureAnimation().Add(new CreatureCommand { dy = -1 }).Repeat(distToUpperBorder)
-                        .Add(new CreatureCommand { dy = 1 }).Repeat(8 - distToUpperBorder);
+                        .Add(new CreatureAnimation().Add(new CreatureCommand { dy = 1 }).Repeat(8 - distToUpperBorder));
                     isGoingUp = false;
                 }
             }
             else
             {
-                var distToLowerBorder = (Location.Y + 64) + webSize.Height - originalCoords.Y;
+                var distToLowerBorder = (originalCoords.Y + webSize.Height + 64) - Location.Y; //remove magic constants (sprite size)
                 if (distToLowerBorder > 8)
                     result = new CreatureAnimation().Add(new CreatureCommand { dy = 1 }).Repeat(8);
                 else
                 {
-                    result = new CreatureAnimation().Add(new CreatureCommand { dy = 1 }).Repeat(distToLowerBorder)
-                        .Add(new CreatureCommand { dy = -1 }).Repeat(8 - distToLowerBorder);
+                    result = new CreatureAnimation()
+                        .Add(new CreatureCommand { dy = 1 }).Repeat(distToLowerBorder)
+                        .Add(new CreatureAnimation().Add(new CreatureCommand { dy = -1 }).Repeat(8 - distToLowerBorder));
                     isGoingUp = true;
                 }
             }

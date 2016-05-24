@@ -46,6 +46,13 @@ namespace Evolution
             return new CreatureAnimation(newCommands);
         }
 
+        public CreatureAnimation Add(CreatureAnimation other)
+        {
+            var newCommands = new List<CreatureCommand>(commands);
+            newCommands.AddRange(other.commands);
+            return new CreatureAnimation(newCommands);
+        }
+
         public CreatureAnimation Repeat(int count)
         {
             var repeatSize = commands.Count;
