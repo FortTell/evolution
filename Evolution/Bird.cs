@@ -13,7 +13,7 @@ namespace Evolution
         int originalY;
         int bottomY;
 
-        public Bird(int x, int y)
+        public Bird(int x, int y) : base(x, y)
         {
             SetLocation(x, y);
             originalY = y;

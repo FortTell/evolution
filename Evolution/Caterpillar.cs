@@ -19,8 +19,8 @@ namespace Evolution
         };
 
         public Caterpillar(int x, int y)
+            : base(x, y)
         {
-            SetLocation(x, y);
             MakeNextMove();
         }
 

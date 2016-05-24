@@ -12,6 +12,13 @@ namespace Evolution
         public CreatureAnimation currentAnim { get; private set; }
         public Point Location { get; private set; }
 
+        public Creature(int x, int y)
+        {
+            SetLocation(x, y);
+            //MakeNextMove();
+        }
+
+
         public void MakeNextMove()
         {
             var anim = MakeCurrentAnim();
