@@ -16,6 +16,7 @@ namespace Evolution
         Random rnd = new Random();
         int tickCount = 0;
         Dictionary<Type, List<Bitmap>> creatureImages;
+        Dictionary<Type, Bitmap> mapObjImages;
         
         public GameForm()
         {
@@ -27,9 +28,12 @@ namespace Evolution
             this.DoubleBuffered = true;
             game = new Game();
 
-            var creatureTypes = GetCreatureTypes();
+            var creatureTypes = GetTypesInheritedFrom(typeof(Creature));
             InitializeUI(creatureTypes);
-            FillCreatureImageDict(creatureTypes);
+            creatureImages = FillCreatureImageDict(creatureTypes);
+
+            var mapObjTypes = GetTypesInheritedFrom(typeof(MapObject));
+            mapObjImages = FillMapObjImageDict(mapObjTypes);
 
             var timer = new Timer();
             timer.Interval = 100;
@@ -57,29 +61,45 @@ namespace Evolution
             Menu.MenuItems.Add(spawner);
         }
 
-        private void FillCreatureImageDict(List<Type> creatureTypes)
+        private Dictionary<Type, List<Bitmap>> FillCreatureImageDict(List<Type> creatureTypes)
         {
-            creatureImages = new Dictionary<Type, List<Bitmap>>();
+            var dct = new Dictionary<Type, List<Bitmap>>();
             foreach (var type in creatureTypes)
             {
-                creatureImages.Add(type, new List<Bitmap>());
+                dct.Add(type, new List<Bitmap>());
                 var name = type.Name.ToLower();
                 for (int i = 1; i <= 8; i++) 
                 {
                     var filename = @"Gfx\" + name + i + ".png";
                     if (File.Exists(filename))
-                        creatureImages[type].Add(new Bitmap(filename));
+                        dct[type].Add(new Bitmap(filename));
                     else 
                         break;
                 }
             }
+            return dct;
         }
 
-        private List<Type> GetCreatureTypes()
+        private Dictionary<Type, Bitmap> FillMapObjImageDict(List<Type> mapObjTypes)
+        {
+            var dct = new Dictionary<Type, Bitmap>();
+            foreach (var type in mapObjTypes)
+            {
+                var filename = @"Gfx\" + type.Name.ToLower() + ".png";
+                if (File.Exists(filename))
+                    dct.Add(type, new Bitmap(filename));
+                else
+                    throw new Exception(String.Format(
+                        "The image for type {0}, which is expected to be at {1}, is not found!", type.Name, filename));
+            }
+            return dct;
+        }
+
+        private List<Type> GetTypesInheritedFrom(Type parentType)
         {
             var ass = System.Reflection.Assembly.GetEntryAssembly();
             return ass.GetTypes()
-                .Where(t => t.BaseType == typeof(Creature))
+                .Where(t => t.BaseType == parentType)
                 .ToList();
         }
 
@@ -93,8 +113,12 @@ namespace Evolution
         void TimerTick()
         {
             if (tickCount == 0)
+            {
                 foreach (var c in game.creatures)
                     c.MakeNextMove();
+                var ctplr = (Caterpillar)game.creatures[0]; //very dirty hack to see if the new ai works
+                ctplr.MakeRealAnim(game.mapObjs);           //
+            }
             foreach (var c in game.creatures)
                 c.SetLocation(
                     c.Location.X + c.currentAnim[tickCount].dx, 
@@ -118,6 +142,8 @@ namespace Evolution
                 var imgList = creatureImages[c.GetType()];
                 g.DrawImage(imgList[tickCount % imgList.Count], c.Location);
             }
+            foreach (var o in game.mapObjs)
+                g.DrawImage(mapObjImages[o.GetType()], o.Location);
             base.OnPaint(e);
         }
     }

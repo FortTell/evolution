@@ -33,5 +33,22 @@ namespace Evolution
                 .AddRandom(moveChoices)
                 .Repeat(2);
         }
+
+        public void MakeRealAnim(List<MapObject> mapObjs)
+        {
+            bool isOnGround = false;
+            foreach (var o in mapObjs)
+            {
+                if (o.Hitbox.Contains(new Point(Location.X, Location.Y + 64 + 1)))
+                {
+                    isOnGround = true;
+                    break;
+                }
+            }
+            if (isOnGround)
+                currentAnim = new CreatureAnimation().Add(new CreatureCommand { dx = 1 }).Repeat(8);
+            else
+                currentAnim = new CreatureAnimation().Add(new CreatureCommand { dy = 1 }).Repeat(8);
+        }
     }
 }
