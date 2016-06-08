@@ -9,6 +9,7 @@ namespace Evolution
 {
     public class Caterpillar : Creature
     {
+        static char mapSymbol = 'C';
         private CreatureCommand[] moveChoices = new CreatureCommand[] 
         {
             new CreatureCommand { dx = 1 }, 
@@ -39,7 +40,7 @@ namespace Evolution
             bool isOnGround = false;
             foreach (var o in mapObjs)
             {
-                if (o.Hitbox.Contains(new Point(Location.X, Location.Y + 64 + 1)))
+                if (o.Hitbox.Contains(new Point(Location.X - o.Location.X, Location.Y - o.Location.Y + 64 + 1)))
                 {
                     isOnGround = true;
                     break;

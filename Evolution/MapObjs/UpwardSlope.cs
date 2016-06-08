@@ -2,11 +2,11 @@
 
 namespace Evolution
 {
-    public class Grass : MapObject
+    class UpwardSlope : MapObject
     {
-        static char mapSymbol = '-';
+        static char mapSymbol = '/';
 
-        public Grass(int x, int y)
+        public UpwardSlope(int x, int y)
         {
             Location = new Point(x, y);
             Hitbox = new Rectangle(0, 0, 64, 64);

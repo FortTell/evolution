@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Evolution
 {
 	public class Spider : Creature
 	{
-        System.Drawing.Size webSize;
-        System.Drawing.Point originalCoords;
+        static char mapSymbol = 's';
+
+        Size webSize;
+        Point originalCoords;
 		bool isGoingUp;
 
 		public Spider (int x, int y) : base(x, y)
 		{
 			isGoingUp = true;
-            webSize = new System.Drawing.Size(32, 32);
-            originalCoords = new System.Drawing.Point(x, y);
+            webSize = new Size(32, 32);
+            originalCoords = new Point(x, y);
             MakeNextMove();
 		}
 

@@ -15,3 +15,5 @@ C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\spider2
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\spider3.png
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\spider4.png
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\grass.png
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\downwardSlope.png
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\upwardSlope.png

@@ -9,6 +9,8 @@ namespace Evolution
 {
     public class Bird : Creature
     {
+        static char mapSymbol = 'b';
+
         bool isGoingUp;
         int originalY;
         int bottomY;
