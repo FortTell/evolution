@@ -17,6 +17,7 @@ namespace Evolution
             mapObjs = new List<MapObject>();
             for (var i = 0; i < 5; i++)
                 mapObjs.Add(new Grass(64 * i, 200));
+            mapObjs.Add(new DownwardSlope(64 * 5, 200));
             for (var i = 6; i < 8; i++)
                 mapObjs.Add(new Grass(64 * i, 300));
         }

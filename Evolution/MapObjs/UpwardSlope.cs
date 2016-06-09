@@ -2,9 +2,9 @@
 
 namespace Evolution
 {
-    class UpwardSlope : MapObject
+    public class UpwardSlope : MapObject
     {
-        static char mapSymbol = '/';
+        public const char mapSymbol = '/';
 
         public UpwardSlope(int x, int y)
         {

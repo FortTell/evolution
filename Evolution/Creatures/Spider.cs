@@ -5,7 +5,7 @@ namespace Evolution
 {
 	public class Spider : Creature
 	{
-        static char mapSymbol = 's';
+        public const char mapSymbol = 's';
 
         Size webSize;
         Point originalCoords;

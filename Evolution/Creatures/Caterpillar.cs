@@ -9,7 +9,7 @@ namespace Evolution
 {
     public class Caterpillar : Creature
     {
-        static char mapSymbol = 'C';
+        public const char mapSymbol = 'C';
         private CreatureCommand[] moveChoices = new CreatureCommand[] 
         {
             new CreatureCommand { dx = 1 }, 

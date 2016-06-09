@@ -4,7 +4,7 @@ namespace Evolution
 {
     public class Grass : MapObject
     {
-        static char mapSymbol = '-';
+        public const char mapSymbol = '-';
 
         public Grass(int x, int y)
         {

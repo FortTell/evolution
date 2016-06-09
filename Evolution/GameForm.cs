@@ -28,11 +28,11 @@ namespace Evolution
             this.DoubleBuffered = true;
             game = new Game();
 
-            var creatureTypes = GetTypesInheritedFrom(typeof(Creature));
+            var creatureTypes = Util.GetTypesInheritedFrom(typeof(Creature));
             InitializeUI(creatureTypes);
             creatureImages = FillCreatureImageDict(creatureTypes);
 
-            var mapObjTypes = GetTypesInheritedFrom(typeof(MapObject));
+            var mapObjTypes = Util.GetTypesInheritedFrom(typeof(MapObject));
             mapObjImages = FillMapObjImageDict(mapObjTypes);
 
             var timer = new Timer();
@@ -93,14 +93,6 @@ namespace Evolution
                         "The image for type {0}, which is expected to be at {1}, is not found!", type.Name, filename));
             }
             return dct;
-        }
-
-        private List<Type> GetTypesInheritedFrom(Type parentType)
-        {
-            var ass = System.Reflection.Assembly.GetEntryAssembly();
-            return ass.GetTypes()
-                .Where(t => t.BaseType == parentType)
-                .ToList();
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)

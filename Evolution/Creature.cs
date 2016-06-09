@@ -9,7 +9,6 @@ namespace Evolution
 {
     public abstract class Creature
     {
-        static char mapSymbol;
         public CreatureAnimation currentAnim { get; protected set; } //or better to leave setter as private?
         public Point Location { get; private set; }
 

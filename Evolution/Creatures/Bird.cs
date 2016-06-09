@@ -9,7 +9,7 @@ namespace Evolution
 {
     public class Bird : Creature
     {
-        static char mapSymbol = 'b';
+        public const char mapSymbol = 'b';
 
         bool isGoingUp;
         int originalY;
