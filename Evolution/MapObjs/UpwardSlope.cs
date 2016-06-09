@@ -6,7 +6,7 @@ namespace Evolution
     {
         public const char mapSymbol = '/';
 
-        public UpwardSlope(int x, int y)
+        public UpwardSlope(int x, int y) : base(x, y)
         {
             Location = new Point(x, y);
             Hitbox = new Rectangle(0, 0, 64, 64);

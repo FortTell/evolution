@@ -15,9 +15,10 @@ namespace Evolution
         Label l;
         Random rnd = new Random();
         int tickCount = 0;
+        string pressedKey = "";
         Dictionary<Type, List<Bitmap>> creatureImages;
         Dictionary<Type, Bitmap> mapObjImages;
-        
+
         public GameForm()
         {
             Height = 600;
@@ -26,7 +27,8 @@ namespace Evolution
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.DoubleBuffered = true;
-            game = new Game();
+
+            StartGame();
 
             var creatureTypes = Util.GetTypesInheritedFrom(typeof(Creature));
             InitializeUI(creatureTypes);
@@ -39,6 +41,16 @@ namespace Evolution
             timer.Interval = 100;
             timer.Tick += (sender, args) => TimerTick();
             timer.Start();
+        }
+
+        private void StartGame()
+        {
+            string filename = @"Levels\levelList.txt";
+            if (File.Exists(filename))
+            {
+                var levels = File.ReadAllLines(filename);
+                game = Game.LoadLevelFromFile(@"Levels\" + levels[0]);
+            }
         }
 
         private void InitializeUI(List<Type> creatureTypes)
@@ -68,12 +80,12 @@ namespace Evolution
             {
                 dct.Add(type, new List<Bitmap>());
                 var name = type.Name.ToLower();
-                for (int i = 1; i <= 8; i++) 
+                for (int i = 1; i <= 8; i++)
                 {
                     var filename = @"Gfx\" + name + i + ".png";
                     if (File.Exists(filename))
                         dct[type].Add(new Bitmap(filename));
-                    else 
+                    else
                         break;
                 }
             }
@@ -95,11 +107,16 @@ namespace Evolution
             return dct;
         }
 
-        protected override void OnKeyPress(KeyPressEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            game.HandleKeyPress(e.KeyChar.ToString());
-            Invalidate();
-            base.OnKeyPress(e);
+            pressedKey = e.KeyCode.ToString();
+            base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            pressedKey = "";
+            base.OnKeyUp(e);
         }
 
         void TimerTick()
@@ -109,19 +126,19 @@ namespace Evolution
                 foreach (var c in game.creatures)
                     c.MakeNextMove();
                 var ctplr = (Caterpillar)game.creatures[0]; //very dirty hack to see if the new ai works
-                ctplr.MakeRealAnim(game.mapObjs);           //
+                ctplr.MakeRealAnim(game.mapObjs, pressedKey);           //
             }
             foreach (var c in game.creatures)
                 c.SetLocation(
-                    c.Location.X + c.currentAnim[tickCount].dx, 
+                    c.Location.X + c.currentAnim[tickCount].dx,
                     c.Location.Y + c.currentAnim[tickCount].dy);
             if (tickCount == 7)
             {
-                
+
                 //handle collisions
             }
             tickCount++;
-            if (tickCount == 8) 
+            if (tickCount == 8)
                 tickCount = 0;
             Invalidate();
         }
@@ -129,13 +146,14 @@ namespace Evolution
         protected override void OnPaint(PaintEventArgs e)
         {
             var g = e.Graphics;
+
+            foreach (var o in game.mapObjs)
+                g.DrawImage(mapObjImages[o.GetType()], o.Location);
             foreach (var c in game.creatures)
             {
                 var imgList = creatureImages[c.GetType()];
                 g.DrawImage(imgList[tickCount % imgList.Count], c.Location);
             }
-            foreach (var o in game.mapObjs)
-                g.DrawImage(mapObjImages[o.GetType()], o.Location);
             base.OnPaint(e);
         }
     }

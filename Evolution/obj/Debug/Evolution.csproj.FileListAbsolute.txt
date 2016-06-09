@@ -17,3 +17,6 @@ C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\spider4
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\grass.png
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\downwardSlope.png
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\upwardSlope.png
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\level1.txt
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\levelList.txt
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\level2.txt

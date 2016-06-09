@@ -10,7 +10,7 @@ namespace Evolution
 {
     public static class MapLoader
     {
-        public static void ReadMap(Game game, string filename)
+        public static void LoadMap(Game game, string filename)
         {
             var raw = File.ReadAllLines(filename);
 
@@ -26,7 +26,7 @@ namespace Evolution
                 mapObjsDct.Add((char)t.GetField("mapSymbol").GetRawConstantValue(), t);
 
             for (var i = 0; i < raw.Length; i++)
-                for (var j = 0; j < raw[0].Length; j++)
+                for (var j = 0; j < raw[i].Length; j++)
                 {
                     if (creaturesDct.ContainsKey((char)raw[i][j]))
                     {
@@ -35,9 +35,9 @@ namespace Evolution
                         game.creatures.Add(creature);
                     }
 
-                    if (creaturesDct.ContainsKey((char)raw[i][j]))
+                    if (mapObjsDct.ContainsKey((char)raw[i][j]))
                     {
-                        var ctor = creaturesDct[raw[i][j]].GetConstructor(new Type[] { typeof(int), typeof(int) });
+                        var ctor = mapObjsDct[raw[i][j]].GetConstructor(new Type[] { typeof(int), typeof(int) });
                         var mapObj = (MapObject)ctor.Invoke(new object[] { j * 64, i * 64 });
                         game.mapObjs.Add(mapObj);
                     }

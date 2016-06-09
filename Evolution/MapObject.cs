@@ -12,6 +12,8 @@ namespace Evolution
         public Rectangle Hitbox { get; protected set; }
         public Point Location { get; protected set; }
 
+        public MapObject(int x, int y) { }
+
         static char mapSymbol;
     }
 }

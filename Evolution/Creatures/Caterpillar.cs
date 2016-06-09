@@ -35,7 +35,7 @@ namespace Evolution
                 .Repeat(2);
         }
 
-        public void MakeRealAnim(List<MapObject> mapObjs)
+        public void MakeRealAnim(List<MapObject> mapObjs, string pressedKey)
         {
             bool isOnGround = false;
             foreach (var o in mapObjs)
@@ -47,7 +47,14 @@ namespace Evolution
                 }
             }
             if (isOnGround)
-                currentAnim = new CreatureAnimation().Add(new CreatureCommand { dx = 1 }).Repeat(8);
+            {
+                if (pressedKey == "A")
+                    currentAnim = new CreatureAnimation().Add(new CreatureCommand { dx = -1 }).Repeat(8);
+                else if (pressedKey == "D")
+                    currentAnim = new CreatureAnimation().Add(new CreatureCommand { dx = 1 }).Repeat(8);
+                else
+                    currentAnim = new CreatureAnimation().Add(new CreatureCommand()).Repeat(8);
+            }
             else
                 currentAnim = new CreatureAnimation().Add(new CreatureCommand { dy = 1 }).Repeat(8);
         }
