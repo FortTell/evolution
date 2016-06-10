@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.Entities
 {
-    public class UpwardSlope : MapObject
+    public class UpwardSlope : Terrain
     {
         public const char mapSymbol = '/';
 

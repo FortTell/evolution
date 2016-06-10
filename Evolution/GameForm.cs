@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using Evolution.Entities;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.GUI
 {
     class GameForm : Form
     {
         Game game;
-        Label l;
         Random rnd = new Random();
         int tickCount = 0;
         string pressedKey = "";
         Dictionary<Type, List<Bitmap>> creatureImages;
-        Dictionary<Type, Bitmap> mapObjImages;
+        Dictionary<Type, Bitmap> terrainObjImages;
 
         public GameForm()
         {
@@ -30,15 +28,15 @@ namespace Evolution
 
             StartGame();
 
-            var creatureTypes = Util.GetTypesInheritedFrom(typeof(Creature));
+            var creatureTypes = ReflectionUtil.GetTypesInheritedFrom(typeof(Creature));
             InitializeUI(creatureTypes);
             creatureImages = FillCreatureImageDict(creatureTypes);
 
-            var mapObjTypes = Util.GetTypesInheritedFrom(typeof(MapObject));
-            mapObjImages = FillMapObjImageDict(mapObjTypes);
+            var terrainObjTypes = ReflectionUtil.GetTypesInheritedFrom(typeof(Terrain));
+            terrainObjImages = FillTerrainObjImageDict(terrainObjTypes);
 
             var timer = new Timer();
-            timer.Interval = 100;
+            timer.Interval = 80;
             timer.Tick += (sender, args) => TimerTick();
             timer.Start();
         }
@@ -49,7 +47,7 @@ namespace Evolution
             if (File.Exists(filename))
             {
                 var levels = File.ReadAllLines(filename);
-                game = Game.LoadLevelFromFile(@"Levels\" + levels[0]);
+                game = Game.LoadLevelFromFile(@"Levels\" + levels[0], typeof(Caterpillar));
             }
         }
 
@@ -62,9 +60,7 @@ namespace Evolution
                 var item = new MenuItem(type.Name);
                 item.Click += (sender, args) =>
                 {
-                    var ctor = type.GetConstructor(new Type[] { typeof(int), typeof(int) });
-                    var creature = (Creature)ctor.Invoke(
-                        new object[] { rnd.Next(Size.Width - 64), rnd.Next(Size.Height - 64) });
+                    var creature = (Creature)ReflectionUtil.CreateAtCoords(type, rnd.Next(Size.Width - 64), rnd.Next(Size.Height - 64));
                     game.creatures.Add(creature);
                     Invalidate();
                 };
@@ -92,10 +88,10 @@ namespace Evolution
             return dct;
         }
 
-        private Dictionary<Type, Bitmap> FillMapObjImageDict(List<Type> mapObjTypes)
+        private Dictionary<Type, Bitmap> FillTerrainObjImageDict(List<Type> terrainObjTypes)
         {
             var dct = new Dictionary<Type, Bitmap>();
-            foreach (var type in mapObjTypes)
+            foreach (var type in terrainObjTypes)
             {
                 var filename = @"Gfx\" + type.Name.ToLower() + ".png";
                 if (File.Exists(filename))
@@ -125,8 +121,8 @@ namespace Evolution
             {
                 foreach (var c in game.creatures)
                     c.MakeNextMove();
-                var ctplr = (Caterpillar)game.creatures[0]; //very dirty hack to see if the new ai works
-                ctplr.MakeRealAnim(game.mapObjs, pressedKey);           //
+                var ctplr = (Caterpillar)game.playerCreature;
+                ctplr.MakeRealAnim(game.terrainObjs, pressedKey);           
             }
             foreach (var c in game.creatures)
                 c.SetLocation(
@@ -147,8 +143,8 @@ namespace Evolution
         {
             var g = e.Graphics;
 
-            foreach (var o in game.mapObjs)
-                g.DrawImage(mapObjImages[o.GetType()], o.Location);
+            foreach (var o in game.terrainObjs)
+                g.DrawImage(terrainObjImages[o.GetType()], o.Location);
             foreach (var c in game.creatures)
             {
                 var imgList = creatureImages[c.GetType()];

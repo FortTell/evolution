@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.Entities
 {
     public class Caterpillar : Creature
     {
@@ -35,7 +32,7 @@ namespace Evolution
                 .Repeat(2);
         }
 
-        public void MakeRealAnim(List<MapObject> mapObjs, string pressedKey)
+        public void MakeRealAnim(List<Terrain> mapObjs, string pressedKey)
         {
             bool isOnGround = false;
             foreach (var o in mapObjs)

@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.Entities
 {
-    public class Grass : MapObject
+    public class Grass : Terrain
     {
         public const char mapSymbol = '-';
 

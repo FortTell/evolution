@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
-namespace Evolution
+namespace Evolution.Logic
 {
-    public class MapObject
+    public class Terrain
     {
         public Rectangle Hitbox { get; protected set; }
         public Point Location { get; protected set; }
 
-        public MapObject(int x, int y) { }
+        public Terrain(int x, int y) { }
 
         static char mapSymbol;
     }

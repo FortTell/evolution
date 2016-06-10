@@ -20,3 +20,4 @@ C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\upwardS
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\level1.txt
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\levelList.txt
 C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Levels\level2.txt
+C:\Users\user\Documents\forttells-repo\evolution\Evolution\bin\Debug\Gfx\finish.png

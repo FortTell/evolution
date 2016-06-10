@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.Entities
 {
-    public class DownwardSlope : MapObject
+    public class DownwardSlope : Terrain
     {
         public const char mapSymbol = '\\';
 

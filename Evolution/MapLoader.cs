@@ -1,12 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using Evolution;
-using System.Reflection;
 using System.Collections.Generic;
-//using Creatures;
 
-namespace Evolution
+namespace Evolution.Logic
 {
     public static class MapLoader
     {
@@ -14,32 +10,29 @@ namespace Evolution
         {
             var raw = File.ReadAllLines(filename);
 
-            var creatureTypes = Util.GetTypesInheritedFrom(typeof(Creature));
-            var mapObjTypes = Util.GetTypesInheritedFrom(typeof(MapObject));
-
+            var creatureTypes = ReflectionUtil.GetTypesInheritedFrom(typeof(Creature));
             var creaturesDct = new Dictionary<char, Type>();
             foreach (var t in creatureTypes)
                 creaturesDct.Add((char)t.GetField("mapSymbol").GetRawConstantValue(), t);
 
-            var mapObjsDct = new Dictionary<char, Type>();
-            foreach (var t in mapObjTypes)
-                mapObjsDct.Add((char)t.GetField("mapSymbol").GetRawConstantValue(), t);
+            var terrainObjTypes = ReflectionUtil.GetTypesInheritedFrom(typeof(Terrain));
+            var terrainObjsDct = new Dictionary<char, Type>();
+            foreach (var t in terrainObjTypes)
+                terrainObjsDct.Add((char)t.GetField("mapSymbol").GetRawConstantValue(), t);
 
             for (var i = 0; i < raw.Length; i++)
                 for (var j = 0; j < raw[i].Length; j++)
                 {
                     if (creaturesDct.ContainsKey((char)raw[i][j]))
                     {
-                        var ctor = creaturesDct[raw[i][j]].GetConstructor(new Type[] { typeof(int), typeof(int) });
-                        var creature = (Creature)ctor.Invoke(new object[] { j * 64, i * 64 });
+                        var creature = (Creature)ReflectionUtil.CreateAtCoords(creaturesDct[(char)raw[i][j]], j * 64, i * 64);
                         game.creatures.Add(creature);
                     }
 
-                    if (mapObjsDct.ContainsKey((char)raw[i][j]))
+                    if (terrainObjsDct.ContainsKey((char)raw[i][j]))
                     {
-                        var ctor = mapObjsDct[raw[i][j]].GetConstructor(new Type[] { typeof(int), typeof(int) });
-                        var mapObj = (MapObject)ctor.Invoke(new object[] { j * 64, i * 64 });
-                        game.mapObjs.Add(mapObj);
+                        var terrain = (Terrain)ReflectionUtil.CreateAtCoords(terrainObjsDct[(char)raw[i][j]], j * 64, i * 64);
+                        game.terrainObjs.Add(terrain);
                     }
                 }
         }

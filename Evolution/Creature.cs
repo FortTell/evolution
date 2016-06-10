@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Evolution.Entities;
 
-namespace Evolution
+namespace Evolution.Logic
 {
     public abstract class Creature
     {
-        public CreatureAnimation currentAnim { get; protected set; } //or better to leave setter as private?
+        public CreatureAnimation currentAnim { get; protected set; } 
         public Point Location { get; private set; }
 
         public Creature(int x, int y)
         {
             SetLocation(x, y);
-            //MakeNextMove();
         }
-
 
         public void MakeNextMove()
         {

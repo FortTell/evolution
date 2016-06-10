@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Evolution
+namespace Evolution.Logic
 {
     public class Game
     {
         public List<Creature> creatures;
-        public List<MapObject> mapObjs;
+        public List<Terrain> terrainObjs;
+        public Creature playerCreature;
 
         public Game()
         {
             creatures = new List<Creature>();// { new Caterpillar(10, 10) };
-            mapObjs = new List<MapObject>();
+            terrainObjs = new List<Terrain>();
             //for (var i = 0; i < 5; i++)
             //    mapObjs.Add(new Grass(64 * i, 200));
             //mapObjs.Add(new DownwardSlope(64 * 5, 200));
@@ -22,10 +21,11 @@ namespace Evolution
             //    mapObjs.Add(new Grass(64 * i, 300));
         }
 
-        public static Game LoadLevelFromFile(string filename)
+        public static Game LoadLevelFromFile(string filename, Type pcType)
         {
             var game = new Game();
             MapLoader.LoadMap(game, filename);
+            game.playerCreature = game.creatures.Where(c => c.GetType() == pcType).First();
             return game;
         }
 

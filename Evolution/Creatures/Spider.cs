@@ -1,7 +1,7 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
+using Evolution.Logic;
 
-namespace Evolution
+namespace Evolution.Entities
 {
 	public class Spider : Creature
 	{
@@ -49,42 +49,6 @@ namespace Evolution
             }
             return result;
         }
-
-		/*public override CreatureAnimation MakeCurrentAnim()
-		{
-			CreatureAnimation result;
-			if (!up)
-			{
-				result = new CreatureAnimation ()
-					.Add (new CreatureCommand { dy = 2 })
-					.Repeat (1);
-				up = true;
-			}
-
-			else
-			{
-				result = new CreatureAnimation ()
-					.Add (new CreatureCommand { dy = -2 })
-					.Repeat (1);
-				up = false;
-			}
-			
-			if (!left)
-			{
-				result = new CreatureAnimation ()
-					.Add (new CreatureCommand { dx = 2 })
-					.Repeat (1);
-			}
-
-			else
-			{
-				result = new CreatureAnimation ()
-					.Add (new CreatureCommand { dx = -2 })
-					.Repeat (1);
-			}
-            left = !left;
-            return result;
-		}*/
 	}
 }
 
